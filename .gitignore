@@ -44,3 +44,10 @@ app.*.map.json
 
 # Local environment
 local.properties
+
+# Signing secrets — never commit these
+android/key.properties
+android/app/keystore.jks
+android/app/*.jks
+android/app/*.keystore
+*.keystore
