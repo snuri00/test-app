@@ -98,48 +98,7 @@ jobs:
             echo "Signed with auto-generated keystore."
           fi
 
-      # ── 6. Launcher icons (PNG for API < 26) ─────────────────────────────
-      - name: Generate launcher icon PNGs
-        run: |
-          declare -A SIZES=(
-            ["mipmap-mdpi"]=48
-            ["mipmap-hdpi"]=72
-            ["mipmap-xhdpi"]=96
-            ["mipmap-xxhdpi"]=144
-            ["mipmap-xxxhdpi"]=192
-          )
-          BASE="android/app/src/main/res"
-          for DENSITY in "${!SIZES[@]}"; do
-            SIZE="${SIZES[$DENSITY]}"
-            DIR="$BASE/$DENSITY"
-            mkdir -p "$DIR"
-            HALF=$((SIZE / 2))
-            R1=$((SIZE * 9 / 20))   # outer ring
-            R2=$((SIZE * 6 / 20))   # mid ring
-            R3=$((SIZE * 3 / 20))   # inner ring
-            SW=$((SIZE / 24 + 1))   # stroke width
-            convert -size "${SIZE}x${SIZE}" xc:"#050A0E" \
-              -fill none \
-              -stroke "#00D4FF" -strokewidth "$SW" \
-              -draw "circle ${HALF},${HALF} ${HALF},$((HALF - R1))" \
-              -strokewidth "$((SW - 1))" -strokealpha 0.6 \
-              -draw "circle ${HALF},${HALF} ${HALF},$((HALF - R2))" \
-              -strokewidth 1 -strokealpha 0.3 \
-              -draw "circle ${HALF},${HALF} ${HALF},$((HALF - R3))" \
-              -strokewidth 1 -strokealpha 0.4 \
-              -draw "line ${HALF},0 ${HALF},$((SIZE - 1))" \
-              -draw "line 0,${HALF},$((SIZE - 1)),${HALF}" \
-              -stroke "#00FF88" -strokewidth "$SW" -strokealpha 1 \
-              -draw "line ${HALF},${HALF} $((HALF + R1)),$((HALF - R1))" \
-              -fill "#00D4FF" -stroke none \
-              -draw "circle ${HALF},${HALF} $((HALF + 3)),${HALF}" \
-              -fill "#00FF88" \
-              -draw "circle $((HALF + R2)),$((HALF - R2)) $((HALF + R2 + 3)),$((HALF - R2))" \
-              "${DIR}/ic_launcher.png"
-            cp "${DIR}/ic_launcher.png" "${DIR}/ic_launcher_round.png"
-          done
-
-      # ── 7. Dependencies ──────────────────────────────────────────────────
+      # ── 6. Dependencies ──────────────────────────────────────────────────
       - name: Install Flutter dependencies
         run: flutter pub get
 
