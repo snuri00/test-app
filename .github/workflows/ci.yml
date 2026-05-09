@@ -32,6 +32,21 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Generate launcher icon PNGs
+        run: |
+          declare -A SIZES=(["mipmap-mdpi"]=48 ["mipmap-hdpi"]=72 ["mipmap-xhdpi"]=96 ["mipmap-xxhdpi"]=144 ["mipmap-xxxhdpi"]=192)
+          BASE="android/app/src/main/res"
+          for DENSITY in "${!SIZES[@]}"; do
+            SIZE="${SIZES[$DENSITY]}"; HALF=$((SIZE/2)); DIR="$BASE/$DENSITY"; mkdir -p "$DIR"
+            convert -size "${SIZE}x${SIZE}" xc:"#050A0E" \
+              -fill none -stroke "#00D4FF" -strokewidth $((SIZE/24+1)) \
+              -draw "circle ${HALF},${HALF} ${HALF},$((HALF-SIZE*9/20))" \
+              -stroke "#00FF88" -draw "line ${HALF},${HALF} $((HALF+SIZE*9/20)),$((HALF-SIZE*9/20))" \
+              -fill "#00D4FF" -stroke none -draw "circle ${HALF},${HALF} $((HALF+3)),${HALF}" \
+              "${DIR}/ic_launcher.png"
+            cp "${DIR}/ic_launcher.png" "${DIR}/ic_launcher_round.png"
+          done
+
       - name: Install dependencies
         run: flutter pub get
 
