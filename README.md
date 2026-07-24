@@ -1,5 +1,7 @@
 # Donatı Metrajı — Kat Planı Üzerinden Alan Seçimi
 
+_—Gevşek Haşim için—_
+
 Hastane (HHA Ana Bina) projesinde **kat planı üzerinde bir bölge seçerek** o bölgedeki
 kolon + perde donatı ağırlığını (ton / kg) anında hesaplayan görsel bir uygulama.
 
